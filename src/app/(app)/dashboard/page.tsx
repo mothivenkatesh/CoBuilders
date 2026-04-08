@@ -9,14 +9,14 @@ import { StartupForm } from "@/components/startup/StartupForm";
 import { Button, Modal, Spinner } from "@/components/ui";
 
 export default function DashboardPage() {
-  const { startups, loading, createStartup } = useStartups();
+  const { startups, loading, createStartup, archiveStartup } = useStartups();
   const [showForm, setShowForm] = useState(false);
   const router = useRouter();
 
   const handleCreateAndChat = async (data: Parameters<typeof createStartup>[0]) => {
     const startup = await createStartup(data);
     setShowForm(false);
-    // Auto-create session and redirect to chat
+    // Create initial session and redirect to chat
     const res = await fetch("/api/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,7 +55,11 @@ export default function DashboardPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {startups.map((startup) => (
-              <StartupCard key={startup.id} startup={startup} />
+              <StartupCard
+                key={startup.id}
+                startup={startup}
+                onDelete={archiveStartup}
+              />
             ))}
           </div>
         )}
