@@ -1,9 +1,29 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* Tremor color tokens */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #09090b;
+  --tremor-brand: #6366f1;
+  --tremor-brand-emphasis: #4f46e5;
+  --tremor-brand-inverted: #ffffff;
+  --tremor-brand-muted: #eef2ff;
+  --tremor-brand-subtle: #c7d2fe;
+
+  --tremor-content: #3f3f46;
+  --tremor-content-emphasis: #18181b;
+  --tremor-content-strong: #09090b;
+  --tremor-content-moderate: #52525b;
+  --tremor-content-subtle: #a1a1aa;
+  --tremor-content-inverted: #fafafa;
+
+  --tremor-border-default: #e4e4e7;
+  --tremor-ring: #e4e4e7;
+  --tremor-background-default: #ffffff;
+  --tremor-background-muted: #f4f4f5;
+  --tremor-background-subtle: #e4e4e7;
+  --tremor-background-emphasis: #18181b;
 }
 
 @theme inline {
@@ -11,17 +31,68 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-tremor-brand: var(--tremor-brand);
+  --color-tremor-brand-emphasis: var(--tremor-brand-emphasis);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #09090b;
+    --foreground: #fafafa;
+    --tremor-brand: #818cf8;
+    --tremor-brand-emphasis: #6366f1;
+    --tremor-brand-inverted: #09090b;
+    --tremor-brand-muted: #1e1b4b;
+    --tremor-brand-subtle: #3730a3;
+
+    --tremor-content: #a1a1aa;
+    --tremor-content-emphasis: #e4e4e7;
+    --tremor-content-strong: #fafafa;
+    --tremor-content-moderate: #71717a;
+    --tremor-content-subtle: #52525b;
+    --tremor-content-inverted: #09090b;
+
+    --tremor-border-default: #27272a;
+    --tremor-ring: #27272a;
+    --tremor-background-default: #09090b;
+    --tremor-background-muted: #18181b;
+    --tremor-background-subtle: #27272a;
+    --tremor-background-emphasis: #fafafa;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Tremor overrides for dark mode consistency */
+.dark .tremor-Card-root,
+.tremor-Card-root[data-theme="dark"] {
+  background-color: var(--tremor-background-muted);
+  border-color: var(--tremor-border-default);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tremor-content-subtle);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tremor-content-moderate);
 }

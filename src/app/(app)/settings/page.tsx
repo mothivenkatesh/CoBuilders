@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@/lib/hooks/use-auth";
 import { createClient } from "@/lib/supabase/client";
 import { AppHeader } from "@/components/layout/AppHeader";
-import { Button, Input, Card } from "@/components/ui";
+import { Card, TextInput, Button, Title, Text } from "@tremor/react";
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -29,39 +29,36 @@ export default function SettingsPage() {
       <div className="flex-1 overflow-y-auto p-6">
         <div className="mx-auto max-w-lg space-y-6">
           <Card>
-            <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              Profile
-            </h3>
+            <Title className="mb-4 text-sm">Profile</Title>
             <div className="space-y-4">
-              <Input
-                label="Email"
-                value={user?.email || ""}
-                disabled
-              />
-              <Input
-                label="Full Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="Your name"
-              />
+              <div>
+                <Text className="mb-1">Email</Text>
+                <TextInput value={user?.email || ""} disabled />
+              </div>
+              <div>
+                <Text className="mb-1">Full Name</Text>
+                <TextInput
+                  value={fullName}
+                  onValueChange={setFullName}
+                  placeholder="Your name"
+                />
+              </div>
               <div className="flex items-center gap-3">
                 <Button onClick={handleSave} loading={saving}>
                   Save
                 </Button>
                 {saved && (
-                  <span className="text-sm text-green-600">Saved!</span>
+                  <Text color="green">Saved!</Text>
                 )}
               </div>
             </div>
           </Card>
 
           <Card>
-            <h3 className="mb-2 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              API Keys
-            </h3>
-            <p className="text-sm text-zinc-500">
+            <Title className="mb-2 text-sm">API Keys</Title>
+            <Text>
               API keys are configured server-side via environment variables. Contact the admin to update them.
-            </p>
+            </Text>
           </Card>
         </div>
       </div>

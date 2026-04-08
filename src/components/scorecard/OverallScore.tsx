@@ -1,3 +1,5 @@
+import { Metric, Text } from "@tremor/react";
+
 type OverallScoreProps = {
   total: number;
   maxPossible: number;
@@ -13,10 +15,8 @@ export function OverallScore({ total, maxPossible }: OverallScoreProps) {
 
   return (
     <div className="text-right">
-      <div className={`text-2xl font-bold ${color}`}>{total}</div>
-      <div className="text-xs text-zinc-500">
-        of {maxPossible} ({percentage}%)
-      </div>
+      <Metric className={color}>{total}</Metric>
+      <Text>of {maxPossible} ({percentage}%)</Text>
     </div>
   );
 }

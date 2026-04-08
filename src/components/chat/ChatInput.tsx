@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Button } from "@/components/ui";
+import { Button } from "@tremor/react";
+import { RiSendPlane2Fill, RiStopCircleFill } from "@remixicon/react";
 
 type ChatInputProps = {
   onSend: (content: string) => void;
@@ -42,15 +43,15 @@ export function ChatInput({ onSend, isStreaming, onStop }: ChatInputProps) {
         onKeyDown={handleKeyDown}
         placeholder="Describe your startup idea..."
         rows={1}
-        className="flex-1 resize-none rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 md:px-4 md:py-3 md:text-sm"
+        className="flex-1 resize-none rounded-tremor-default border border-tremor-border bg-tremor-background px-3 py-2.5 text-base text-tremor-content-emphasis placeholder:text-tremor-content-subtle focus:border-tremor-brand focus:outline-none focus:ring-1 focus:ring-tremor-brand md:px-4 md:py-3 md:text-sm"
         disabled={isStreaming}
       />
       {isStreaming ? (
-        <Button variant="danger" size="md" onClick={onStop}>
+        <Button color="red" icon={RiStopCircleFill} onClick={onStop}>
           Stop
         </Button>
       ) : (
-        <Button onClick={handleSubmit} disabled={!value.trim()}>
+        <Button icon={RiSendPlane2Fill} onClick={handleSubmit} disabled={!value.trim()}>
           Send
         </Button>
       )}

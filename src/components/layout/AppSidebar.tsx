@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/hooks/use-auth";
+import { Text, Divider } from "@tremor/react";
+import { RiHome4Line, RiFlashlightLine, RiSettings3Line, RiLogoutBoxRLine } from "@remixicon/react";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
-  { href: "/startups", label: "Startups", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
-  { href: "/settings", label: "Settings", icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" },
+  { href: "/dashboard", label: "Dashboard", icon: RiHome4Line },
+  { href: "/startups", label: "Startups", icon: RiFlashlightLine },
+  { href: "/settings", label: "Settings", icon: RiSettings3Line },
 ];
 
 type AppSidebarProps = {
@@ -21,7 +23,6 @@ export function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
 
   return (
     <>
-      {/* Mobile backdrop */}
       {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 md:hidden"
@@ -30,18 +31,22 @@ export function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-zinc-200 bg-zinc-50 transition-transform duration-200 dark:border-zinc-800 dark:bg-zinc-950 md:static md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex h-full w-64 flex-col border-r border-tremor-border bg-tremor-background transition-transform duration-200 md:static md:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800">
-          <Link href="/" className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-            AI Cofounder
+        <div className="flex h-14 items-center justify-between border-b border-tremor-border px-4">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600">
+              <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+              </svg>
+            </div>
+            <span className="text-lg font-bold text-tremor-content-strong">CoBuilders</span>
           </Link>
-          {/* Mobile close button */}
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800 md:hidden"
+            className="flex h-8 w-8 items-center justify-center rounded-tremor-default text-tremor-content-subtle hover:bg-tremor-background-subtle md:hidden"
             aria-label="Close menu"
           >
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -53,39 +58,41 @@ export function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
         <nav className="flex-1 space-y-1 p-3">
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            const IconComp = item.icon;
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-tremor-default px-3 py-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-zinc-200 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
-                    : "text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800/50"
+                    ? "bg-tremor-brand-muted text-tremor-brand-emphasis"
+                    : "text-tremor-content hover:bg-tremor-background-muted"
                 }`}
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
-                </svg>
+                <IconComp className="h-5 w-5" />
                 {item.label}
               </Link>
             );
           })}
         </nav>
 
-        <div className="border-t border-zinc-200 p-3 dark:border-zinc-800">
+        <Divider className="my-0" />
+
+        <div className="p-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-300 text-sm font-medium text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 text-xs font-bold text-white">
               {user?.email?.[0]?.toUpperCase() || "?"}
             </div>
-            <div className="flex-1 truncate text-sm text-zinc-600 dark:text-zinc-400">
-              {user?.email}
+            <div className="flex-1 truncate">
+              <Text className="truncate text-xs">{user?.email}</Text>
             </div>
             <button
               onClick={signOut}
-              className="shrink-0 rounded-lg px-2 py-1.5 text-xs text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              className="shrink-0 rounded-tremor-default p-1.5 text-tremor-content-subtle hover:bg-tremor-background-muted hover:text-tremor-content"
+              title="Sign out"
             >
-              Sign out
+              <RiLogoutBoxRLine className="h-4 w-4" />
             </button>
           </div>
         </div>

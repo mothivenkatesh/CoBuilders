@@ -4,7 +4,8 @@ import type { ValidationScore } from "@/types/database";
 import { LAYER_LABELS, SCORE_INTERPRETATIONS } from "@/types/startup";
 import { LayerScoreBar } from "./LayerScoreBar";
 import { OverallScore } from "./OverallScore";
-import { Card } from "@/components/ui";
+import { Card, Title, Text, Callout, Divider } from "@tremor/react";
+import { RiAlertLine, RiCheckboxCircleLine, RiErrorWarningLine } from "@remixicon/react";
 
 const ALL_LAYERS = [
   "problem_pain",
@@ -30,20 +31,24 @@ export function ValidationScorecard({ scores, compact = false }: ValidationScore
     (i) => total >= i.min && total <= i.max
   );
 
-  // Check for fatal flaw (any layer at 1)
   const fatalFlaw = scores.find((s) => s.score === 1);
 
+  const calloutColor = interpretation?.color === "green" ? "teal"
+    : interpretation?.color === "yellow" ? "yellow"
+    : interpretation?.color === "orange" ? "orange"
+    : "red";
+
+  const calloutIcon = interpretation?.color === "green" ? RiCheckboxCircleLine
+    : interpretation?.color === "red" ? RiAlertLine
+    : RiErrorWarningLine;
+
   return (
-    <Card padding={compact ? "sm" : "lg"}>
+    <Card className={compact ? "p-3" : ""}>
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            Validation Scorecard
-          </h3>
+          <Title className={compact ? "text-base" : ""}>Validation Scorecard</Title>
           {scores.length > 0 && (
-            <p className="mt-1 text-sm text-zinc-500">
-              {scores.length} of 8 layers scored
-            </p>
+            <Text className="mt-1">{scores.length} of 8 layers scored</Text>
           )}
         </div>
         {scores.length > 0 && (
@@ -52,26 +57,21 @@ export function ValidationScorecard({ scores, compact = false }: ValidationScore
       </div>
 
       {fatalFlaw && (
-        <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-400">
-          Fatal flaw detected in <strong>{LAYER_LABELS[fatalFlaw.layer]}</strong>
+        <Callout title="Fatal Flaw Detected" icon={RiAlertLine} color="red" className="mb-4">
+          {LAYER_LABELS[fatalFlaw.layer]}
           {fatalFlaw.rationale && `: ${fatalFlaw.rationale}`}
-        </div>
+        </Callout>
       )}
 
       {interpretation && scores.length >= 4 && (
-        <div
-          className={`mb-4 rounded-lg p-3 text-sm ${
-            interpretation.color === "green"
-              ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-              : interpretation.color === "yellow"
-              ? "bg-yellow-50 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400"
-              : interpretation.color === "orange"
-              ? "bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400"
-              : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
-          }`}
+        <Callout
+          title={interpretation.label}
+          icon={calloutIcon}
+          color={calloutColor}
+          className="mb-4"
         >
-          <strong>{interpretation.label}:</strong> {interpretation.description}
-        </div>
+          {interpretation.description}
+        </Callout>
       )}
 
       <div className="space-y-3">

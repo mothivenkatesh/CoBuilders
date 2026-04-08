@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import type { Memory } from "@/types/database";
 import { MemoryItem } from "./MemoryItem";
+import { Bold, Text, Divider } from "@tremor/react";
+import { RiCloseLine } from "@remixicon/react";
 
 type MemoryPanelProps = {
   startupId: string;
@@ -26,7 +28,6 @@ export function MemoryPanel({ startupId, isOpen, onToggle }: MemoryPanelProps) {
     }
   }, [isOpen, startupId]);
 
-  // Group by type
   const grouped = new Map<string, Memory[]>();
   for (const m of memories) {
     if (!grouped.has(m.memory_type)) grouped.set(m.memory_type, []);
@@ -35,7 +36,6 @@ export function MemoryPanel({ startupId, isOpen, onToggle }: MemoryPanelProps) {
 
   return (
     <>
-      {/* Mobile backdrop */}
       {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 md:hidden"
@@ -46,31 +46,26 @@ export function MemoryPanel({ startupId, isOpen, onToggle }: MemoryPanelProps) {
       <div
         className={`
           ${isOpen ? "fixed inset-0 z-50 w-full md:relative md:inset-auto md:z-auto md:w-80" : "w-0"}
-          border-l border-zinc-200 bg-zinc-50 transition-all dark:border-zinc-800 dark:bg-zinc-950
-          overflow-hidden
+          border-l border-tremor-border bg-tremor-background-muted transition-all overflow-hidden
         `}
       >
-        <div className="flex h-14 items-center justify-between border-b border-zinc-200 px-4 dark:border-zinc-800">
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-            Agent Memory
-          </h3>
+        <div className="flex h-14 items-center justify-between border-b border-tremor-border px-4">
+          <Bold className="text-sm">Agent Memory</Bold>
           <button
             onClick={onToggle}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+            className="flex h-8 w-8 items-center justify-center rounded-tremor-default text-tremor-content-subtle hover:bg-tremor-background-subtle hover:text-tremor-content"
           >
-            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-            </svg>
+            <RiCloseLine className="h-5 w-5" />
           </button>
         </div>
 
         <div className="h-[calc(100vh-3.5rem)] overflow-y-auto p-3">
           {loading ? (
-            <p className="text-center text-sm text-zinc-400">Loading memories...</p>
+            <Text className="text-center">Loading memories...</Text>
           ) : memories.length === 0 ? (
-            <p className="text-center text-sm text-zinc-400">
+            <Text className="text-center">
               No memories yet. The agent will learn as you chat.
-            </p>
+            </Text>
           ) : (
             <div className="space-y-4">
               {TYPE_ORDER.map((type) => {
@@ -78,9 +73,9 @@ export function MemoryPanel({ startupId, isOpen, onToggle }: MemoryPanelProps) {
                 if (!items) return null;
                 return (
                   <div key={type}>
-                    <h4 className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                    <Text className="mb-1.5 text-xs font-semibold uppercase tracking-wider">
                       {type}s ({items.length})
-                    </h4>
+                    </Text>
                     <div className="space-y-1.5">
                       {items.map((m) => (
                         <MemoryItem key={m.id} memory={m} />

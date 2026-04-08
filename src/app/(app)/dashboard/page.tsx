@@ -6,7 +6,9 @@ import { useStartups } from "@/lib/hooks/use-startups";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { StartupCard } from "@/components/startup/StartupCard";
 import { StartupForm } from "@/components/startup/StartupForm";
-import { Button, Modal, Spinner } from "@/components/ui";
+import { Button, Title, Text, Dialog, DialogPanel } from "@tremor/react";
+import { Spinner } from "@/components/ui/spinner";
+import { RiAddLine, RiRocketLine } from "@remixicon/react";
 
 export default function DashboardPage() {
   const { startups, loading, createStartup, archiveStartup } = useStartups();
@@ -16,7 +18,6 @@ export default function DashboardPage() {
   const handleCreateAndChat = async (data: Parameters<typeof createStartup>[0]) => {
     const startup = await createStartup(data);
     setShowForm(false);
-    // Create initial session and redirect to chat
     const res = await fetch("/api/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,7 +32,9 @@ export default function DashboardPage() {
       <AppHeader
         title="Dashboard"
         actions={
-          <Button onClick={() => setShowForm(true)}>New Startup</Button>
+          <Button icon={RiAddLine} onClick={() => setShowForm(true)}>
+            New Startup
+          </Button>
         }
       />
 
@@ -42,13 +45,14 @@ export default function DashboardPage() {
           </div>
         ) : startups.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-              No startups yet
-            </h2>
-            <p className="mt-2 text-zinc-500">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-tremor-brand-muted">
+              <RiRocketLine className="h-8 w-8 text-tremor-brand" />
+            </div>
+            <Title>No startups yet</Title>
+            <Text className="mt-2">
               Create your first startup idea to start validating it with AI.
-            </p>
-            <Button className="mt-4" onClick={() => setShowForm(true)}>
+            </Text>
+            <Button className="mt-4" icon={RiAddLine} onClick={() => setShowForm(true)}>
               Create your first startup
             </Button>
           </div>
@@ -65,12 +69,15 @@ export default function DashboardPage() {
         )}
       </div>
 
-      <Modal isOpen={showForm} onClose={() => setShowForm(false)} title="New Startup">
-        <StartupForm
-          onSubmit={handleCreateAndChat}
-          onCancel={() => setShowForm(false)}
-        />
-      </Modal>
+      <Dialog open={showForm} onClose={() => setShowForm(false)} static={true}>
+        <DialogPanel>
+          <Title className="mb-4">New Startup</Title>
+          <StartupForm
+            onSubmit={handleCreateAndChat}
+            onCancel={() => setShowForm(false)}
+          />
+        </DialogPanel>
+      </Dialog>
     </div>
   );
 }

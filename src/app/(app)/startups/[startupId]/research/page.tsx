@@ -3,8 +3,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { AppHeader } from "@/components/layout/AppHeader";
-import { Card, Badge, Spinner } from "@/components/ui";
+import { Card, Badge, Text, Bold } from "@tremor/react";
+import { Spinner } from "@/components/ui/spinner";
 import type { CompetitorIntel } from "@/types/database";
+
+const threatColors: Record<string, string> = {
+  critical: "red",
+  high: "orange",
+  medium: "yellow",
+  low: "green",
+};
 
 export default function ResearchPage() {
   const params = useParams();
@@ -27,8 +35,8 @@ export default function ResearchPage() {
           {loading ? (
             <div className="flex justify-center py-20"><Spinner size="lg" /></div>
           ) : competitors.length === 0 ? (
-            <div className="py-20 text-center text-zinc-500">
-              No competitor research yet. Mention competitors during a session and the agent will research them automatically.
+            <div className="py-20 text-center">
+              <Text>No competitor research yet. Mention competitors during a session and the agent will research them automatically.</Text>
             </div>
           ) : (
             <div className="space-y-4">
@@ -36,62 +44,48 @@ export default function ResearchPage() {
                 <Card key={c.id}>
                   <div className="flex items-start justify-between">
                     <div>
-                      <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">
-                        {c.competitor_name}
-                      </h3>
+                      <Bold>{c.competitor_name}</Bold>
                       {c.website_url && (
                         <a
                           href={c.website_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline"
+                          className="block text-sm text-tremor-brand hover:underline"
                         >
                           {c.website_url}
                         </a>
                       )}
                     </div>
                     {c.threat_level && (
-                      <Badge
-                        variant={
-                          c.threat_level === "critical"
-                            ? "red"
-                            : c.threat_level === "high"
-                            ? "orange"
-                            : c.threat_level === "medium"
-                            ? "yellow"
-                            : "green"
-                        }
-                      >
+                      <Badge color={threatColors[c.threat_level] || "slate"}>
                         {c.threat_level}
                       </Badge>
                     )}
                   </div>
                   {c.description && (
-                    <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                      {c.description}
-                    </p>
+                    <Text className="mt-2">{c.description}</Text>
                   )}
                   {c.funding_info && (
-                    <p className="mt-1 text-sm text-zinc-500">
+                    <Text className="mt-1">
                       <span className="font-medium">Funding:</span> {c.funding_info}
-                    </p>
+                    </Text>
                   )}
                   {c.pricing && (
-                    <p className="mt-1 text-sm text-zinc-500">
+                    <Text className="mt-1">
                       <span className="font-medium">Pricing:</span> {c.pricing}
-                    </p>
+                    </Text>
                   )}
                   <div className="mt-3 flex flex-wrap gap-3">
                     {c.strengths && c.strengths.length > 0 && (
                       <div className="text-xs">
                         <span className="font-medium text-green-600">Strengths:</span>{" "}
-                        <span className="text-zinc-500">{c.strengths.join(", ")}</span>
+                        <span className="text-tremor-content">{c.strengths.join(", ")}</span>
                       </div>
                     )}
                     {c.weaknesses && c.weaknesses.length > 0 && (
                       <div className="text-xs">
                         <span className="font-medium text-red-600">Weaknesses:</span>{" "}
-                        <span className="text-zinc-500">{c.weaknesses.join(", ")}</span>
+                        <span className="text-tremor-content">{c.weaknesses.join(", ")}</span>
                       </div>
                     )}
                   </div>

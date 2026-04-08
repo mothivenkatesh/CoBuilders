@@ -7,7 +7,8 @@ import { AppHeader } from "@/components/layout/AppHeader";
 import { ValidationScorecard } from "@/components/scorecard/ValidationScorecard";
 import { RecentSessions } from "@/components/dashboard/RecentSessions";
 import { useScores } from "@/lib/hooks/use-scores";
-import { Button, Badge, Spinner, Card } from "@/components/ui";
+import { Card, Badge, Button, Text } from "@tremor/react";
+import { Spinner } from "@/components/ui/spinner";
 import { STAGE_LABELS, IDEA_TYPE_LABELS, BUSINESS_MODEL_LABELS } from "@/types/startup";
 import type { Startup, Conversation } from "@/types/database";
 
@@ -39,7 +40,7 @@ export default function StartupDetailPage() {
   }
 
   if (!startup) {
-    return <div className="p-6 text-zinc-500">Startup not found</div>;
+    return <div className="p-6"><Text>Startup not found</Text></div>;
   }
 
   return (
@@ -54,31 +55,28 @@ export default function StartupDetailPage() {
       />
       <div className="flex-1 overflow-y-auto p-6">
         <div className="mx-auto max-w-4xl space-y-6">
-          {/* Startup info */}
           <Card>
             {startup.one_liner && (
-              <p className="mb-3 text-zinc-600 dark:text-zinc-400">{startup.one_liner}</p>
+              <Text className="mb-3">{startup.one_liner}</Text>
             )}
             <div className="flex flex-wrap gap-2">
-              {startup.stage && <Badge variant="blue">{STAGE_LABELS[startup.stage] || startup.stage}</Badge>}
-              {startup.idea_type && <Badge>{IDEA_TYPE_LABELS[startup.idea_type] || startup.idea_type}</Badge>}
-              {startup.business_model && <Badge variant="purple">{BUSINESS_MODEL_LABELS[startup.business_model] || startup.business_model}</Badge>}
+              {startup.stage && <Badge color="indigo">{STAGE_LABELS[startup.stage] || startup.stage}</Badge>}
+              {startup.idea_type && <Badge color="slate">{IDEA_TYPE_LABELS[startup.idea_type] || startup.idea_type}</Badge>}
+              {startup.business_model && <Badge color="violet">{BUSINESS_MODEL_LABELS[startup.business_model] || startup.business_model}</Badge>}
             </div>
             {startup.target_customer && (
-              <p className="mt-3 text-sm text-zinc-500">
+              <Text className="mt-3">
                 <span className="font-medium">Target:</span> {startup.target_customer}
-              </p>
+              </Text>
             )}
           </Card>
 
-          {/* Scorecard */}
           {scoresLoading ? (
             <div className="flex justify-center py-8"><Spinner /></div>
           ) : (
             <ValidationScorecard scores={scores} />
           )}
 
-          {/* Recent sessions */}
           <RecentSessions sessions={sessions} />
         </div>
       </div>

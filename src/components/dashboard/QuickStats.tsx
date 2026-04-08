@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui";
+import { Card, Metric, Text } from "@tremor/react";
 
 type QuickStatsProps = {
   startupCount: number;
@@ -11,18 +11,16 @@ export function QuickStats({ startupCount, sessionCount, avgScore, weakestLayer 
   const stats = [
     { label: "Startups", value: startupCount },
     { label: "Sessions", value: sessionCount },
-    { label: "Avg Score", value: avgScore !== null ? `${avgScore.toFixed(1)}/5` : "—" },
-    { label: "Weakest Layer", value: weakestLayer || "—" },
+    { label: "Avg Score", value: avgScore !== null ? `${avgScore.toFixed(1)}/5` : "\u2014" },
+    { label: "Weakest Layer", value: weakestLayer || "\u2014" },
   ];
 
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
       {stats.map((stat) => (
-        <Card key={stat.label} padding="sm">
-          <p className="text-xs text-zinc-500">{stat.label}</p>
-          <p className="mt-1 text-xl font-bold text-zinc-900 dark:text-zinc-100">
-            {stat.value}
-          </p>
+        <Card key={stat.label} className="p-3">
+          <Text className="text-xs">{stat.label}</Text>
+          <Metric className="mt-1 text-xl">{stat.value}</Metric>
         </Card>
       ))}
     </div>

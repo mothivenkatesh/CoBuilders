@@ -6,7 +6,9 @@ import { useChat } from "@/lib/hooks/use-chat";
 import { ChatContainer } from "@/components/chat/ChatContainer";
 import { SessionSidebar } from "@/components/chat/SessionSidebar";
 import { MemoryPanel } from "@/components/memory/MemoryPanel";
-import { Button, Spinner } from "@/components/ui";
+import { Button } from "@tremor/react";
+import { Spinner } from "@/components/ui/spinner";
+import { RiBrainLine, RiStopCircleLine } from "@remixicon/react";
 
 function ChatSessionContent() {
   const params = useParams();
@@ -76,11 +78,9 @@ function ChatSessionInner({
     loadMessages();
   }, [loadMessages]);
 
-  // Auto-start: send a greeting to kick off the validation
   useEffect(() => {
     if (autostart && !greeted && !isStreaming && messages.length === 0) {
       setGreeted(true);
-      // Small delay to let UI render first
       const timer = setTimeout(() => {
         sendMessage(
           "I just created this startup profile. Review the details I provided and start validating my idea. Begin with your intake process."
@@ -105,23 +105,24 @@ function ChatSessionInner({
 
   return (
     <div className="flex h-full">
-      {/* Session sidebar: hidden on mobile */}
       <div className="hidden md:block">
         <SessionSidebar startupId={startupId} />
       </div>
       <div className="flex flex-1 flex-col">
-        <div className="flex h-10 items-center justify-end gap-2 border-b border-zinc-200 px-3 dark:border-zinc-800 md:px-4">
+        <div className="flex h-10 items-center justify-end gap-2 border-b border-tremor-border px-3 md:px-4">
           <Button
-            variant="ghost"
-            size="sm"
+            variant="light"
+            size="xs"
+            icon={RiStopCircleLine}
             onClick={handleEndSession}
             loading={ending}
           >
             End Session
           </Button>
           <Button
-            variant="ghost"
-            size="sm"
+            variant="light"
+            size="xs"
+            icon={RiBrainLine}
             onClick={() => setMemoryOpen(!memoryOpen)}
           >
             {memoryOpen ? "Hide Memory" : "Memory"}
