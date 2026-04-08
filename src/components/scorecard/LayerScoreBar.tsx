@@ -92,13 +92,13 @@ export function LayerScoreBar({
           )}
           {gaps && gaps.length > 0 && (
             <div>
-              <span className="font-medium text-red-600 dark:text-red-400">Gaps: </span>
+              <span className="font-medium text-red-600">Gaps: </span>
               <Text className="inline">{gaps.join(", ")}</Text>
             </div>
           )}
           {strengths && strengths.length > 0 && (
             <div>
-              <span className="font-medium text-green-600 dark:text-green-400">Strengths: </span>
+              <span className="font-medium text-green-600">Strengths: </span>
               <Text className="inline">{strengths.join(", ")}</Text>
             </div>
           )}

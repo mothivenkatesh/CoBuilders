@@ -57,7 +57,7 @@ export function StartupCard({ startup, onDelete }: StartupCardProps) {
       {/* Delete button */}
       <button
         onClick={() => setShowConfirm(true)}
-        className="absolute right-3 top-3 rounded-tremor-default p-1 text-tremor-content-subtle opacity-0 transition-opacity hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 dark:hover:bg-red-900/20"
+        className="absolute right-3 top-3 rounded-tremor-default p-1 text-tremor-content-subtle opacity-0 transition-opacity hover:bg-red-50 hover:text-red-500 group-hover:opacity-100"
         title="Delete startup"
       >
         <RiDeleteBinLine className="h-4 w-4" />

@@ -52,7 +52,7 @@ function ChatPageContent() {
                 className="cursor-pointer transition-shadow hover:shadow-md"
                 onClick={() => router.push(`/chat?startupId=${s.id}`)}
               >
-                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">{s.name}</h3>
+                <h3 className="font-semibold text-zinc-900">{s.name}</h3>
                 {s.one_liner && (
                   <p className="mt-1 text-sm text-zinc-500">{s.one_liner}</p>
                 )}
